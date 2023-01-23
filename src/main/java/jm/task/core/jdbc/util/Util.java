@@ -1,29 +1,42 @@
 package jm.task.core.jdbc.util;
 
+import org.hibernate.SessionBuilder;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
 public class Util {
-//    public static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-    public static final String DB_URL = "jdbc:mysql://localhost:3306/?user=root";
-
+    //    public static final String DB_DRIVER = "com.mysql.jdbc.Driver";
+    public static final String DB_URL = "jdbc:mysql://localhost:3306/mydbtest";
     public static final String DB_USERNAME = "root";
     public static final String DB_PASSWORD = "rootroot";
 
-
-    public Connection getConnection() {
-        Connection connection = null;
+    public static Connection getConnection() {
+        Connection conn = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
             System.out.println("Connection OK");
+            conn.setAutoCommit(false);
+            conn.commit();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             System.out.println("Connection ERROR");
+//        }finally {
+//            if (conn != null) {
+//                try {
+//        conn.setAutoCommit(false);
+//                    conn.close();
+//                    System.out.println("Соединение с БД закрыто");
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
+//            }
         }
-        return connection;
+
+        return conn;
     }
 
 
